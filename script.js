@@ -1,13 +1,12 @@
-// Extend Promise with custom implementations
-Promise.myRace = function (promises) {
+function myRace(promises) {
   return new Promise((resolve, reject) => {
     promises.forEach(p => {
       Promise.resolve(p).then(resolve).catch(reject);
     });
   });
-};
+}
 
-Promise.myAny = function (promises) {
+function myAny(promises) {
   return new Promise((resolve, reject) => {
     let rejectedCount = 0;
     const total = promises.length;
@@ -23,9 +22,9 @@ Promise.myAny = function (promises) {
         });
     });
   });
-};
+}
 
-Promise.myAll = function (promises) {
+function myAll(promises) {
   return new Promise((resolve, reject) => {
     const results = [];
     let completed = 0;
@@ -39,12 +38,12 @@ Promise.myAll = function (promises) {
             resolve(results);
           }
         })
-        .catch(reject); // reject immediately
+        .catch(reject); // reject immediately on first failure
     });
   });
-};
+}
 
-Promise.myAllSettled = function (promises) {
+function myAllSettled(promises) {
   return new Promise(resolve => {
     const results = [];
     let completed = 0;
@@ -65,4 +64,11 @@ Promise.myAllSettled = function (promises) {
         });
     });
   });
+}
+
+module.exports = {
+  myRace,
+  myAny,
+  myAll,
+  myAllSettled
 };
